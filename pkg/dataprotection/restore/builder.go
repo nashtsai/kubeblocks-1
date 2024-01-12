@@ -188,13 +188,14 @@ func (r *restoreJobBuilder) addCommonEnv() *restoreJobBuilder {
 	}
 	// add time env
 	actionSetEnv := r.backupSet.ActionSet.Spec.Env
-	timeFormat := getTimeFormat(r.backupSet.ActionSet.Spec.Env)
+	timeFormat := getTimeFormat(actionSetEnv)
 	appendTimeEnv := func(envName, envTimestampName string, targetTime *metav1.Time) {
 		if targetTime.IsZero() {
 			return
 		}
+		targetTime = transformTimeWithZone(targetTime, getTimeZone(actionSetEnv))
 		if envName != "" {
-			r.env = append(r.env, corev1.EnvVar{Name: envName, Value: targetTime.UTC().Format(timeFormat)})
+			r.env = append(r.env, corev1.EnvVar{Name: envName, Value: targetTime.Format(timeFormat)})
 		}
 		if envTimestampName != "" {
 			r.env = append(r.env, corev1.EnvVar{Name: envTimestampName, Value: strconv.FormatInt(targetTime.Unix(), 10)})

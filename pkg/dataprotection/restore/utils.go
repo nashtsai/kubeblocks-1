@@ -148,6 +148,27 @@ func getTimeFormat(envs []corev1.EnvVar) string {
 	return time.RFC3339
 }
 
+func getTimeZone(envs []corev1.EnvVar) string {
+	for _, env := range envs {
+		if env.Name == dptypes.DPTimeZone {
+			return env.Value
+		}
+	}
+	return ""
+}
+
+func transformTimeWithZone(targetTime *metav1.Time, timeZone string) *metav1.Time {
+	if timeZone == "" {
+		return targetTime
+	}
+	// TODO
+	zone, err := time.LoadLocation(timeZone)
+	if err != nil {
+		return targetTime
+	}
+	return &metav1.Time{Time: targetTime.In(zone)}
+}
+
 func CompareWithBackupStopTime(backupI, backupJ dpv1alpha1.Backup) bool {
 	endTimeI := backupI.GetEndTime()
 	endTimeJ := backupJ.GetEndTime()
