@@ -156,6 +156,16 @@ func getInstanceTemplates(synthesizedComp *SynthesizedComponent) []workloads.Ins
 	if instances == nil {
 		return nil
 	}
+	toWorkloadLabels := func(labels map[string]kbappsv1.LabelValue) map[string]string {
+		if labels == nil {
+			return nil
+		}
+		converted := make(map[string]string, len(labels))
+		for k, v := range labels {
+			converted[k] = string(v)
+		}
+		return converted
+	}
 	instanceTemplates := make([]workloads.InstanceTemplate, len(instances))
 	for i, tpl := range instances {
 		instanceTemplates[i] = workloads.InstanceTemplate{
@@ -163,7 +173,7 @@ func getInstanceTemplates(synthesizedComp *SynthesizedComponent) []workloads.Ins
 			Replicas:             instances[i].Replicas,
 			Ordinals:             instances[i].Ordinals,
 			Annotations:          instances[i].Annotations,
-			Labels:               instances[i].Labels,
+			Labels:               toWorkloadLabels(instances[i].Labels),
 			SchedulingPolicy:     instances[i].SchedulingPolicy,
 			Resources:            instances[i].Resources,
 			Env:                  instances[i].Env,

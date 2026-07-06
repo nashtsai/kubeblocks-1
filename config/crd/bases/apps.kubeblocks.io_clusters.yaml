@@ -1067,10 +1067,14 @@ spec:
                             type: array
                           labels:
                             additionalProperties:
+                              description: LabelValue is a Kubernetes label value.
+                              maxLength: 63
+                              pattern: ^(([A-Za-z0-9]([-A-Za-z0-9_.]*[A-Za-z0-9])?)?)$
                               type: string
                             description: |-
                               Specifies a map of key-value pairs that will be merged into the Pod's existing labels.
                               Values for existing keys will be overwritten, and new keys will be added.
+                            maxProperties: 64
                             type: object
                           name:
                             description: |-
@@ -8268,10 +8272,15 @@ spec:
                                   type: array
                                 labels:
                                   additionalProperties:
+                                    description: LabelValue is a Kubernetes label
+                                      value.
+                                    maxLength: 63
+                                    pattern: ^(([A-Za-z0-9]([-A-Za-z0-9_.]*[A-Za-z0-9])?)?)$
                                     type: string
                                   description: |-
                                     Specifies a map of key-value pairs that will be merged into the Pod's existing labels.
                                     Values for existing keys will be overwritten, and new keys will be added.
+                                  maxProperties: 64
                                   type: object
                                 name:
                                   description: |-
@@ -12296,10 +12305,14 @@ spec:
                                 type: array
                               labels:
                                 additionalProperties:
+                                  description: LabelValue is a Kubernetes label value.
+                                  maxLength: 63
+                                  pattern: ^(([A-Za-z0-9]([-A-Za-z0-9_.]*[A-Za-z0-9])?)?)$
                                   type: string
                                 description: |-
                                   Specifies a map of key-value pairs that will be merged into the Pod's existing labels.
                                   Values for existing keys will be overwritten, and new keys will be added.
+                                maxProperties: 64
                                 type: object
                               name:
                                 description: |-

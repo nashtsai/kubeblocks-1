@@ -789,6 +789,12 @@ type TLSSecretRef struct {
 	Key string `json:"key"`
 }
 
+// LabelValue is a Kubernetes label value.
+//
+// +kubebuilder:validation:MaxLength=63
+// +kubebuilder:validation:Pattern=`^(([A-Za-z0-9]([-A-Za-z0-9_.]*[A-Za-z0-9])?)?)$`
+type LabelValue string
+
 // InstanceTemplate allows customization of individual replica configurations in a Component.
 type InstanceTemplate struct {
 	// Name specifies the unique name of the instance Pod created using this InstanceTemplate.
@@ -850,8 +856,9 @@ type InstanceTemplate struct {
 	// Specifies a map of key-value pairs that will be merged into the Pod's existing labels.
 	// Values for existing keys will be overwritten, and new keys will be added.
 	//
+	// +kubebuilder:validation:MaxProperties=64
 	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]LabelValue `json:"labels,omitempty"`
 
 	// Specifies the scheduling policy for the instance.
 	// If defined, it will overwrite the scheduling policy defined in ClusterSpec and/or ClusterComponentSpec.
